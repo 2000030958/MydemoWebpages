@@ -1,0 +1,124 @@
+*{
+    font-family: Arial, Helvetica, sans-serif;
+    margin:0px;
+    padding: 0;
+    box-sizing: border-box;
+}
+#zepto{
+    display:flex;
+    width:100%;
+}
+.sorting-price{
+    display: flex;
+    width:100%;
+    margin-top:30px;
+    margin-bottom:30px;
+    margin-left:20px;
+    margin-right:10px;
+    gap: 10px; 
+    display: inline;
+}
+.sorting-price button {
+    padding: 10px 20px;
+    font-weight: bold;
+    color:#e44e79;
+    border-bottom:1px solid #e44e79;
+    border-right:0px;
+    border-left:0px;
+    border-top:0px;
+    background-color: white;
+    border-radius: 4%;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+#products{
+    display:flex;
+    flex-wrap: wrap;
+    width:100%;
+    margin-right:20px;
+    margin-left:30px;
+    margin-top:30px;
+    gap:15px;
+    height:120px;
+    
+    
+}
+.products-list{
+    
+}
+.products .products-list .products-img{
+    height:160px;
+    width:180px;
+    border-radius:10%;
+    border:2px solid #f7effa;
+    cursor:pointer;
+    
+}
+.products p{
+    font-size:13px;
+    line-height:40px;
+    font-weight:bold;
+}
+.products button{
+    padding:10px 50px;
+    font-weight: bold;
+    color:#e44e79;
+    border:1px solid #e44e79;
+    border-color:#e44e79;
+    background-color: white;
+    border-radius:4%;
+}
+
+.products .discounts{
+    color:#d2cdd1;
+}
+.products .quantities{
+    color:rgb(71, 67, 67);
+}
+.active2{
+    transform: scale(1.1, 1.1);
+    transition: transform 0.3s ease;
+}
+#categories{
+    width:25%;
+    border-right:1px solid rgb(229, 231, 235);
+}
+.category{
+    display:flex;
+    margin-top:20px;
+    margin-bottom:10px;
+    margin-left:50px;
+    align-items: center;
+    cursor:pointer;
+    
+}
+.category .image{
+    height: 50px;
+    width:50px;
+    border-radius: 50%;
+    border:1px solid #f7effa;
+    background-color: #f7effa;
+
+}
+.image img{
+    height: 50px;
+    width:50px;
+
+}
+.category p{
+    padding-left:10px;
+    font-size: 14px;
+    font-weight:normal;
+    width:7%;
+}
+
+.active1{
+    color:#950edc;
+    border-left:5px solid #950edc;
+    background-color: #f7e5ff;
+    padding-top:9px;
+    padding-bottom:9px;
+    padding-left:15px;
+    padding-right:15px;
+    font-weight: bold;
+}

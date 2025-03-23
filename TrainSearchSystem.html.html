@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Train Search System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .search-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 80%;
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .train-card {
+            background-color: #fff;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Train Search System</h1>
+
+        <div class="search-box">
+            <label>From:</label>
+            <input type="text" id="fromStation" placeholder="Enter departure station">
+            <label>To:</label>
+            <input type="text" id="toStation" placeholder="Enter destination station">
+            <button id="searchButton">Modify Search</button>
+        </div>
+        <h2>Available Trains</h2>
+        <div id="train-list">
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const trainData = [
+                { name: "Vande Bharat Express", number: "20833", from: "Vijayawada", to: "Chennai", departure: "09:45 AM", arrival: "02:20 PM" },
+                { name: "Godavari Express", number: "12727", from: "Vijayawada", to: "Hyderabad", departure: "10:30 PM", arrival: "05:00 AM" },
+                { name: "Charminar Express", number: "12759", from: "Chennai", to: "Hyderabad", departure: "06:10 PM", arrival: "05:00 AM" },
+                { name: "Satavahana Express", number: "12713", from: "Vijayawada", to: "Bangalore", departure: "06:30 AM", arrival: "11:00 AM" },
+                { name: "Krishna Express", number: "17405", from: "Vijayawada", to: "Tirupati", departure: "09:00 PM", arrival: "06:00 AM" },
+                { name: "Shatabdi Express", number: "12027", from: "Chennai", to: "Bangalore", departure: "06:00 AM", arrival: "10:30 AM" },
+                { name: "Rajdhani Express", number: "22691", from: "Bangalore", to: "Delhi", departure: "08:30 PM", arrival: "10:45 AM" },
+                { name: "Duronto Express", number: "12269", from: "Mumbai", to: "Nagpur", departure: "08:00 PM", arrival: "06:00 AM" },
+                { name: "Garib Rath Express", number: "12739", from: "Visakhapatnam", to: "Secunderabad", departure: "08:30 PM", arrival: "06:30 AM" },
+                { name: "Jan Shatabdi Express", number: "12051", from: "Mumbai", to: "Pune", departure: "05:30 PM", arrival: "08:30 PM" },
+                { name: "Kaveri Express", number: "16021", from: "Bangalore", to: "Chennai", departure: "09:00 PM", arrival: "05:00 AM" },
+                { name: "Humsafar Express", number: "22305", from: "Patna", to: "Delhi", departure: "08:00 PM", arrival: "10:00 AM" },
+                { name: "Howrah Express", number: "12839", from: "Mumbai", to: "Howrah", departure: "11:00 PM", arrival: "04:30 AM" },
+                { name: "Gatimaan Express", number: "12049", from: "Delhi", to: "Agra", departure: "08:10 AM", arrival: "09:50 AM" },
+                { name: "Matsyagandha Express", number: "12619", from: "Mumbai", to: "Mangalore", departure: "03:20 PM", arrival: "07:40 AM" },
+                { name: "Netravati Express", number: "16345", from: "Mumbai", to: "Trivandrum", departure: "11:40 AM", arrival: "06:00 AM" },
+                { name: "Mangalore Express", number: "12685", from: "Chennai", to: "Mangalore", departure: "08:20 PM", arrival: "09:10 AM" },
+                { name: "Mandovi Express", number: "10103", from: "Mumbai", to: "Goa", departure: "07:10 AM", arrival: "06:50 PM" },
+                { name: "Punjab Mail", number: "12137", from: "Mumbai", to: "Ferozepur", departure: "07:35 PM", arrival: "05:30 AM" },
+                { name: "Jammu Tawi Express", number: "13151", from: "Kolkata", to: "Jammu Tawi", departure: "11:45 AM", arrival: "08:20 PM" },
+                { name: "North East Express", number: "12505", from: "Guwahati", to: "Delhi", departure: "10:00 AM", arrival: "04:30 PM" },
+                { name: "Bihar Sampark Kranti", number: "12565", from: "Patna", to: "Delhi", departure: "08:00 PM", arrival: "10:30 AM" },
+                { name: "Ranthambore Express", number: "12465", from: "Indore", to: "Jodhpur", departure: "06:10 AM", arrival: "07:15 PM" },
+                { name: "Sabarmati Express", number: "19165", from: "Ahmedabad", to: "Varanasi", departure: "09:50 AM", arrival: "06:20 PM" },
+                { name: "Lucknow Mail", number: "12229", from: "Delhi", to: "Lucknow", departure: "10:00 PM", arrival: "06:45 AM" },
+                { name: "Deccan Queen", number: "12123", from: "Mumbai", to: "Pune", departure: "05:10 PM", arrival: "08:25 PM" },
+                { name: "Utkal Express", number: "18477", from: "Puri", to: "Haridwar", departure: "08:35 PM", arrival: "05:50 AM" },
+                { name: "Sealdah Rajdhani", number: "12313", from: "Sealdah", to: "New Delhi", departure: "04:50 PM", arrival: "10:30 AM" },
+                { name: "Golden Temple Mail", number: "12903", from: "Mumbai", to: "Amritsar", departure: "09:25 PM", arrival: "05:45 AM" },
+                { name: "Janshatabdi Express", number: "12053", from: "Bhubaneswar", to: "Howrah", departure: "06:00 AM", arrival: "12:30 PM" },
+                { name: "Tirunelveli Express", number: "12633", from: "Chennai", to: "Tirunelveli", departure: "08:00 PM", arrival: "08:30 AM" },
+                { name: "Mumbai LTT Express", number: "22103", from: "Lokmanya Tilak", to: "Madurai", departure: "11:30 AM", arrival: "03:00 AM" },
+                { name: "Janshatabdi Express", number: "12071", from: "Mumbai", to: "Jalna", departure: "07:30 AM", arrival: "02:30 PM" },
+                { name: "Mahamana Express", number: "22104", from: "Varanasi", to: "Delhi", departure: "06:35 PM", arrival: "08:45 AM" },
+                { name: "Shalimar Express", number: "14645", from: "Delhi", to: "Jammu Tawi", departure: "03:50 PM", arrival: "06:00 AM" },
+                { name: "Yesvantpur Express", number: "12251", from: "Kochuveli", to: "Yesvantpur", departure: "03:45 PM", arrival: "05:30 AM" }
+            ];
+
+
+            const searchBtn = document.getElementById("searchButton");
+            const trainListDiv = document.getElementById("train-list");
+
+            function searchTrains() {
+                const fromStation = document.getElementById("fromStation").value.trim();
+                const toStation = document.getElementById("toStation").value.trim();
+
+                if (fromStation === "" || toStation === "") {
+                    alert("Please enter both From and To stations.");
+                    return;
+                }
+
+                // Array to store filtered results
+                let filteredTrains = [];
+
+                // Loop through trainData and filter based on search
+                trainData.forEach(train => {
+                    if (train.from.toLowerCase() === fromStation.toLowerCase() &&
+                        train.to.toLowerCase() === toStation.toLowerCase()) {
+                        filteredTrains.push(train);
+                    }
+                });
+
+                // Display filtered trains
+                displayTrains(filteredTrains);
+            }
+
+            // Function to display train results
+            function displayTrains(trains) {
+                trainListDiv.innerHTML = ""; // Clear previous results
+
+                if (trains.length === 0) {
+                    trainListDiv.innerHTML = "<p>No trains found for the given route.</p>";
+                    return;
+                }
+
+                trains.forEach(train => {
+                    const trainCard = document.createElement("div");
+                    trainCard.classList.add("train-card");
+                    trainCard.innerHTML = `
+                <h3>${train.name} (${train.number})</h3>
+                <p><strong>From:</strong> ${train.from} <br> <strong>To:</strong> ${train.to}</p>
+                <p><strong>Departure:</strong> ${train.departure} <br> <strong>Arrival:</strong> ${train.arrival}</p>
+            `;
+                    trainListDiv.appendChild(trainCard);
+                });
+            }
+
+            // Attach event listener to search button
+            searchBtn.addEventListener("click", searchTrains);
+        });
+
+    </script>
+</body>
+
+</html>
